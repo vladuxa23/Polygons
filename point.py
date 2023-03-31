@@ -31,3 +31,7 @@ class Point:
         if not isinstance(value, (int, type(None))):
             raise TypeError(f"Expected int, received {type(value)}")
         self.__y = value
+
+    @property
+    def pos(self):
+        return self.__x, self.__y

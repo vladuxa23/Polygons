@@ -1,3 +1,5 @@
+from typing import List
+
 from canvas import Canvas
 from point import Point
 
@@ -6,7 +8,7 @@ class Line:
     def __init__(self, start: Point, end: Point) -> None:
         self.start = start
         self.end = end
-        self.points = self.__init_points()
+        self.points = self.__init_points(self.start, self.end)
 
     def __str__(self) -> str:
         return f"Line {self.points}"
@@ -52,49 +54,71 @@ class Line:
     def min_y(self) -> Point:
         return min(self.points, key=lambda point: point.y)
 
-    def __init_points(self) -> None:
-        x1, y1, x2, y2 = self.start.x, self.start.y, self.end.x, self.end.y
+    @staticmethod
+    def __init_points(start: Point, end: Point) -> List[Point]:
+        """
+        Инициализация точек, которые занимает линия
 
+        :param start: начальная точка
+        :param end: конечная точка
+        :return: список с объектами Point
+        """
+
+        if not isinstance(start, Point):
+            raise TypeError(f"Expected Point, received {type(start)}")
+
+        if not isinstance(end, Point):
+            raise TypeError(f"Expected Point, received {type(end)}")
+
+        x1, y1, x2, y2 = end.y, end.x, start.y, start.x
         points = []
-        issteep = abs(y2 - y1) > abs(x2 - x1)
-        if issteep:
+        rev = False
+
+        is_steep = abs(y2 - y1) > abs(x2 - x1)
+
+        if is_steep:
             x1, y1 = y1, x1
             x2, y2 = y2, x2
-        rev = False
+
         if x1 > x2:
             x1, x2 = x2, x1
             y1, y2 = y2, y1
             rev = True
-        deltax = x2 - x1
-        deltay = abs(y2 - y1)
-        error = int(deltax / 2)
+
+        delta_x = x2 - x1
+        delta_y = abs(y2 - y1)
+        error = int(delta_x / 2)
         y = y1
-        ystep = None
+
+        y_step = None
         if y1 < y2:
-            ystep = 1
+            y_step = 1
         else:
-            ystep = -1
+            y_step = -1
+
         for x in range(x1, x2 + 1):
-            if issteep:
+            if is_steep:
                 points.append(Point(y, x))
             else:
                 points.append(Point(x, y))
-            error -= deltay
+            error -= delta_y
             if error < 0:
-                y += ystep
-                error += deltax
-        # Reverse the list if the coordinates were reversed
+                y += y_step
+                error += delta_x
+
+        # Переворачиваем список, если координаты были перевернуты
         if rev:
             points.reverse()
         return points
 
-    def show(self) -> None:
-        canvas = Canvas(20, 20)
+    def show(self, canvas: Canvas) -> None:
+
         for point in self.points:
             canvas.draw_point(point.x, point.y)
         canvas.show()
 
 
 if __name__ == '__main__':
-    line = Line(Point(1, 1), Point(7, 3))
-    line.show()
+    line = Line(Point(1, 1), Point(1, 7))
+    canvas = Canvas(20, 20)
+    line.show(canvas)

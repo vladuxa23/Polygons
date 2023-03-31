@@ -135,7 +135,7 @@ class Canvas:
                     if point.x == x and point.y == y:
                         row.append(point.fill)
             result.append(row)
-            print(row)
+            print("".join(row))
 
     def __init_points(self) -> List[CanvasPoint]:
         """
