@@ -1,3 +1,4 @@
+from canvas import Canvas
 from point import Point
 
 
@@ -52,30 +53,48 @@ class Line:
         return min(self.points, key=lambda point: point.y)
 
     def __init_points(self) -> None:
-        # if self.start.x < self.end.x:
-        #     self.start.x = -1 * self.start.x
-        #     self.end.x = -1 * self.end.x
-        points = []
-        for x in range(self.start.x, self.end.x+1):
-            for y in range(self.start.y, self.end.y+1):
-                points.append(Point(x, y))
+        x1, y1, x2, y2 = self.start.x, self.start.y, self.end.x, self.end.y
 
+        points = []
+        issteep = abs(y2 - y1) > abs(x2 - x1)
+        if issteep:
+            x1, y1 = y1, x1
+            x2, y2 = y2, x2
+        rev = False
+        if x1 > x2:
+            x1, x2 = x2, x1
+            y1, y2 = y2, y1
+            rev = True
+        deltax = x2 - x1
+        deltay = abs(y2 - y1)
+        error = int(deltax / 2)
+        y = y1
+        ystep = None
+        if y1 < y2:
+            ystep = 1
+        else:
+            ystep = -1
+        for x in range(x1, x2 + 1):
+            if issteep:
+                points.append(Point(y, x))
+            else:
+                points.append(Point(x, y))
+            error -= deltay
+            if error < 0:
+                y += ystep
+                error += deltax
+        # Reverse the list if the coordinates were reversed
+        if rev:
+            points.reverse()
         return points
 
     def show(self) -> None:
-        # По логике надо писать класс для отображения конкретной фигуры, которую ему передаём
-        result = ""
-        for x in range(self.max_x.x + 2):
-            for y in range(self.max_y.y + 2):
-                if Point(x, y) in self.points:
-                    result += "."
-                else:
-                    result += "*"
-            result += "\n"
+        canvas = Canvas(20, 20)
+        for point in self.points:
+            canvas.draw_point(point.x, point.y)
+        canvas.show()
 
-        print(result)
 
 if __name__ == '__main__':
-    line = Line(Point(1,1), Point(2, 3))
-    # print(line.points)
+    line = Line(Point(1, 1), Point(7, 3))
     line.show()
