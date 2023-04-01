@@ -18,21 +18,47 @@ class Line:
 
     @property
     def start(self) -> Point:
+        """
+        Получение начальной точки линии
+
+        :return: начальная точка Point
+        """
+
         return self.__start
 
     @start.setter
     def start(self, value: Point) -> None:
+        """
+        Установка начальной точки линии
+
+        :param value: начальная точка Point
+        :return: None
+        """
+
         if not isinstance(value, Point):
             raise TypeError(f"Expected Point, received {type(value)}")
 
         self.__start = value
 
     @property
-    def end(self):
+    def end(self) -> Point:
+        """
+        Получение конечной точки линии
+
+        :return: конечная точка Point
+        """
+
         return self.__end
 
     @end.setter
-    def end(self, value):
+    def end(self, value: Point) -> None:
+        """
+        Установка начальной точки линии
+
+        :param value: конечная точка Point
+        :return: None
+        """
+
         if not isinstance(value, Point):
             raise TypeError(f"Expected Point, received {type(value)}")
 
@@ -40,18 +66,42 @@ class Line:
 
     @property
     def max_x(self) -> Point:
+        """
+        Получение максимальной точки по координате x
+
+        :return: максимальная точка по координате x
+        """
+
         return max(self.points, key=lambda point: point.x)
 
     @property
     def max_y(self) -> Point:
+        """
+        Получение максимальной точки по координате y
+
+        :return: максимальная точка по координате y
+        """
+
         return max(self.points, key=lambda point: point.y)
 
     @property
     def min_x(self) -> Point:
+        """
+        Получение минимальной точки по координате x
+
+        :return: минимальная точка по координате x
+        """
+
         return min(self.points, key=lambda point: point.x)
 
     @property
     def min_y(self) -> Point:
+        """
+        Получение минимальной точки по координате y
+
+        :return: минимальная точка по координате y
+        """
+
         return min(self.points, key=lambda point: point.y)
 
     @staticmethod
@@ -90,7 +140,6 @@ class Line:
         error = int(delta_x / 2)
         y = y1
 
-        y_step = None
         if y1 < y2:
             y_step = 1
         else:
@@ -112,6 +161,12 @@ class Line:
         return points
 
     def show(self, canvas: Canvas) -> None:
+        """
+        Отрисовка фигуры на холсте
+
+        :param canvas: объект Canvas
+        :return: None
+        """
 
         for point in self.points:
             canvas.draw_point(point.x, point.y)
