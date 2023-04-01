@@ -174,6 +174,6 @@ class Line:
 
 
 if __name__ == '__main__':
-    line = Line(Point(1, 1), Point(1, 7))
+    line = Line(Point(1, 1), Point(10, 17))
     canvas = Canvas(20, 20)
     line.show(canvas)

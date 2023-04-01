@@ -16,7 +16,7 @@ class PolygonDetector:
         if not isinstance(point, Point):
             raise TypeError(f"Expected Point, received {type(point)}")
 
-        for polygon_point in polygon.angle_points:
+        for polygon_point in polygon.points:
             if polygon_point.x + 1 == point.x:
                 # print(polygon_point.x + 1, point.x)
                 return True

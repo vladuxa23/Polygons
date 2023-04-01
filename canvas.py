@@ -145,8 +145,9 @@ class Canvas:
         """
 
         points = []
-        for x in range(self.width):
-            for y in range(self.height):
+        for x in range(self.height):
+            for y in range(self.width):
+
                 points.append(CanvasPoint(x, y))
 
         return points
@@ -154,5 +155,11 @@ class Canvas:
 
 if __name__ == '__main__':
     canvas = Canvas(10, 15)
+
+    canvas.draw_point(1, 2)
+    canvas.draw_point(1, 3)
+    canvas.draw_point(1, 4)
+    canvas.draw_point(1, 5)
+    canvas.draw_point(1, 6)
 
     canvas.show()
