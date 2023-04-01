@@ -55,7 +55,7 @@ class Canvas:
         """
         Установка ширины холста
 
-        :return: значение ширины холста
+        :return: None
         """
 
         if not isinstance(value, int):
