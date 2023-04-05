@@ -4,8 +4,9 @@ from examples import light
 from point import Point
 from polygon import Polygon
 
+# module not use
 
-class PolygonDetector:
+class FigureDetector:
 
     @staticmethod
     def is_polygon_next_x_point(polygon: Polygon, point: Point):
