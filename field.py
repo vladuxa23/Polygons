@@ -50,6 +50,7 @@ class Field:
     def figures(self) -> List[List[FieldPoint]]:
         figures = []  # создаём список с фигурами
 
+        # Проходимся слева направо -> сверху вниз
         for x in range(len(self.points)):
             for y in range(len(self.points[x])):
                 point = self.points[x][y]  # получаем точку из массива
@@ -60,7 +61,7 @@ class Field:
                 if not figures:  # для первой точки
                     figures.append([point, *point.neighbours])
 
-                else:
+                else:  # для последующих
                     for figure in figures:
                         if point in figure:
                             figure.extend(point.neighbours)
@@ -68,95 +69,29 @@ class Field:
                     else:
                         figures.append([point, *point.neighbours])
 
-                #
-                # try:
-                #     next_point = self.points[x][y+1]
-                #     if not next_point.neighbours:  # если у следующей точки нет соседей, отбрасываем её
-                #         continue
-                # except IndexError:
-                #     continue
-                #
-                # # for figure in figures:
-                # print(point, next_point)
-                # # --------------------------------------------------------------------------------------------
-                #
-                # # сами точки и их соседи
-                # intersection_result = set(point.neighbours).intersection(set(next_point.neighbours))
-                #
-                # if intersection_result:
-                #     union_points = set(point.neighbours).union(set(next_point.neighbours))
-                #     union_points.add(point)
-                #     union_points.add(next_point)
-                #
-                # print()
+        # Проходимся снизу вверх -> справа налево
+        for x in range(len(self.points) - 1, 0, -1):
+            for y in range(len(self.points[0]) - 1, 0, -1):
+                point = self.points[x][y]  # получаем точку из массива
 
-                # if intersection_result:
-                #     if not figures:
-                #         figures.append(list(intersection_result))
-                #
-                #     else:
-                #         for figure in figures:
-                #             if point not in figure:
-                #                 for figure_point in figure:
-                #                     if point in figure_point.neighbours:
-                #                         break
-                #                 else:
-                #                     figures.append(list(set(point.neighbours).union(set(next_point.neighbours))))
-                #                     break
-                #
-                #             if next_point not in figure:
-                #                 for figure_point in figure:
-                #                     if next_point in figure_point.neighbours:
-                #                         break
-                #                 else:
-                #                     figures.append(list(set(point.neighbours).union(set(next_point.neighbours))))
-                #                     break
-                        # else:
-                        #     figures.append([point, next_point])
+                if not point.neighbours:  # если у точки нет соседей, отбрасываем её
+                    continue
 
+                if not figures:  # для первой точки
+                    figures.append([point, *point.neighbours])
 
-
-
-                # -------------------------------------------------
-                #
-                # if not tmp:
-                #     tmp.append(point)
-                #     tmp.extend(point.neighbours)
-                #     tmp = list(set(tmp))
-                #     result.append(tmp)
-                # else:
-                #     for figure in result:
-                #         for neighbour in point.neighbours:
-                #             if neighbour in figure:
-                #                 figure.extend(point.neighbours)
-                #                 figure = list(set(figure))
-                #                 continue
-                #             else:
-                #                 tmp = []
-                #                 tmp.append(neighbour)
-                #                 tmp.extend(neighbour.neighbours)
-                #                 tmp = list(set(tmp))
-                #                 result.append(tmp)
+                else:  # для последующих
+                    for figure in figures:
+                        if point in figure:
+                            figure.extend(point.neighbours)
+                            break
+                    else:
+                        figures.append([point, *point.neighbours])
 
         for i in range(len(figures)):
             figures[i] = list(set(figures[i]))
 
-        result = []
-
-        for figure in figures:
-            if figure not in result:
-                result.append(figure)
-
-        return result
-
-
-
-    # def __get_figure(self, point: FieldPoint):
-    #     print(point)
-    #     for neighbour in point.neighbours:
-    #
-    #     print(point.neighbours)
-
+        return figures
 
     @staticmethod
     def __init_points(field: str) -> List[FieldPoint]:
@@ -211,15 +146,13 @@ class Field:
                 pass
         return neighbors
 
+    @property
+    def max_figure(self) -> List[FieldPoint]:
+        return max(self.figures, key=len)
+
 
 if __name__ == '__main__':
-    field = Field(examples.hard)
-
-    # canvas = Canvas(field.width, field.height)
-    # for row in field.points:
-    #     for point in row:
-    #         if point.fill == ".":
-    #             canvas.draw_point(point.x, point.y)
+    field = Field(examples.hard_2)
 
     for figure in field.figures:
         canvas = Canvas(field.width, field.height)
