@@ -16,7 +16,7 @@ def draw_figures(figures, field_width=40, field_height=20):
         print()
 
 
-def draw_figure(figure: List[FieldPoint], field_width=40, field_height=20):
+def draw_figure(figure: List[FieldPoint], field_width=20, field_height=10):
     canvas = Canvas(field_width, field_height)
 
     for point in figure:
