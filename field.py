@@ -48,6 +48,12 @@ class Field:
 
     @property
     def figures(self) -> List[List[FieldPoint]]:
+        """
+        Определение фигур находящизся на поле
+
+        :return: список со списками точек определённых фигур
+        """
+
         figures = []  # создаём список с фигурами
 
         # Проходимся слева направо -> сверху вниз
@@ -93,6 +99,16 @@ class Field:
 
         return figures
 
+    @property
+    def max_figure(self) -> List[FieldPoint]:
+        """
+        Определение самой большой фигуры на поле
+
+        :return: список точек фигуры
+        """
+
+        return max(self.figures, key=len)
+
     @staticmethod
     def __init_points(field: str) -> List[FieldPoint]:
         """
@@ -108,11 +124,18 @@ class Field:
         points = []
         for x in range(len(rows[0])):
             for y in range(len(rows)):
-                points.append(FieldPoint(x, y, fill=rows[y][x], neighbours=None))  # TODO не None, а определение соседей
+                points.append(FieldPoint(x, y, fill=rows[y][x], neighbours=None))
 
         return Points(points)
 
     def __init_neighbours(self, points: List[FieldPoint]) -> List[FieldPoint]:
+        """
+        Инициализация (определение) всех точек, которые принадлежат к одной фигуре
+
+        :param points: список всех точек поля
+        :return: список всех точек поля с определёнными соседями
+        """
+
         points = points[:]
         for row in points:
             for point in row:
@@ -123,6 +146,13 @@ class Field:
         return points
 
     def __get_point_neighbour(self, point: FieldPoint) -> List[FieldPoint]:
+        """
+        Определение соседей конкретной точки
+
+        :param point: точка поля
+        :return: список соседей точки
+        """
+
         neighbors = []
 
         if point.fill == "*":  # TODO Если будет не *, будет не корректно
@@ -145,10 +175,6 @@ class Field:
             except IndexError:
                 pass
         return neighbors
-
-    @property
-    def max_figure(self) -> List[FieldPoint]:
-        return max(self.figures, key=len)
 
 
 if __name__ == '__main__':
