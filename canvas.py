@@ -1,36 +1,6 @@
-from typing import Union, List
+from typing import List
 
-from point import Point
-
-
-class CanvasPoint(Point):
-    def __init__(self, x: Union[int, None] = 0, y: Union[int, None] = 0, fill: str = "*"):
-        super(CanvasPoint, self).__init__(x, y)
-
-        self.fill = fill
-
-    @property
-    def fill(self) -> str:
-        """
-        Получение символа заполнения
-
-        :return: символ заполнения
-        """
-
-        return self.__fill
-
-    @fill.setter
-    def fill(self, value: str) -> None:
-        """
-        Установка символа заполнения
-
-        :param value: символ заполнения (str)
-        :return: None
-        """
-
-        if not isinstance(value, str):
-            raise TypeError(f"Expected str, received {type(value)}")
-        self.__fill = value
+from point import CanvasPoint
 
 
 class Canvas:
@@ -39,6 +9,9 @@ class Canvas:
         self.height = height
         self.background_fill = fill
         self.points = self.__init_points()
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}(width={self.width!r}, height={self.height!r}, fill={self.background_fill!r})"
 
     @property
     def width(self) -> int:
@@ -84,6 +57,7 @@ class Canvas:
 
         if not isinstance(value, int):
             raise TypeError(f"Expected int, received {type(value)}")
+
         self.__height = value
 
     # @property
@@ -127,14 +101,16 @@ class Canvas:
         :return: None
         """
 
-        result = []
+        field = [["" for _ in range(self.width)] for _ in range(self.height)]
+
         for x in range(self.width):
-            row = []
             for y in range(self.height):
                 for point in self.points:
                     if point.x == x and point.y == y:
-                        row.append(point.fill)
-            result.append(row)
+                        field[y][x] = point.fill
+                        break
+
+        for row in field:
             print("".join(row))
 
     def __init_points(self) -> List[CanvasPoint]:
@@ -145,9 +121,8 @@ class Canvas:
         """
 
         points = []
-        for x in range(self.height):
-            for y in range(self.width):
-
+        for x in range(self.width):
+            for y in range(self.height):
                 points.append(CanvasPoint(x, y))
 
         return points
