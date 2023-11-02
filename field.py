@@ -11,6 +11,9 @@ class Field:
         self.__points = self.__init_points(field)
         self.__points = self.__init_neighbours(self.points)
 
+    def __str__(self):
+        return self.field_raw
+
     def __repr__(self):
         return f"{self.__class__.__name__}(field={self.field_raw!r})"
 
